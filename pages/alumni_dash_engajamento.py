@@ -11,7 +11,7 @@ import base64
 
 exibir_banner('painel/engajamento.png', altura_px=100)
 
-
+#importando bases
 base_consolidada= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\base_final_consolidada.xlsx', tipo='excel')
 engajamento_mensal= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_por_mes.xlsx', tipo='excel')
 engajamento_detalhado= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_detalhado.xlsx', tipo='excel')
@@ -22,25 +22,43 @@ st.subheader("Visão por status da meta", divider='blue')
 
 #colors = ['#D4EFFC','#9DDCF9','#00BDF2', '#008ED4',  '#002561','#924A7C', '#EE2D67','#F2665E', '#EBEA70','#8EC6B2']
 
+#como nessa base vai ter registro de outros alunos filtrando apenas os alumni. Nas outras duas bases já vai ter apenas alumni
 engajamento_detalhado = engajamento_detalhado[engajamento_detalhado['Status_real'] == 'FORMADO']
 
-paleta = ['#002561']
+
+
+#configurando sidebar com filtros gerais, esses filtros impactam na página inteira
 
 with st.sidebar:
     st.divider()
     st.subheader('Selecione seus filtros:')
     with st.popover("Filtros"):
-        filtro_area_atual = selecionar_filtro(base_consolidada,'Area_Atual','Selecione a área de formação')
+
+        filtro_area_atual = selecionar_filtro(base_consolidada,'Area_Atual','Filtre por área de formação')
         base_consolidada_filtrada = aplicar_filtro(base_consolidada, 'Area_Atual',filtro_area_atual)
-        engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado, 'Area_Atual',filtro_area_atual)
+
+        
+
+        filtro_genero = selecionar_filtro(base_consolidada_filtrada,'Gênero','Filtre por gênero')
+        base_consolidada_filtrada = aplicar_filtro(base_consolidada_filtrada, 'Gênero',filtro_genero)
 
 
+        filtro_raca = selecionar_filtro(base_consolidada_filtrada,'Cor_raça','Filtre por raça')
+        base_consolidada_filtrada = aplicar_filtro(base_consolidada_filtrada, 'Cor_raça',filtro_raca)
+
+
+        filtro_tempo_formacao = selecionar_filtro(base_consolidada_filtrada,'Classificacao_tempo_de_formacao','Filtre por tempo de formação')
+        base_consolidada_filtrada = aplicar_filtro(base_consolidada_filtrada, 'Classificacao_tempo_de_formacao',filtro_tempo_formacao)
+ 
+
+
+#escolhendo se quer ver dados somados, só de engajamento ou só giveback
 opcao = st.radio(
     "Escolha o tipo de participação para análise:",
     ("Engajamento + Giveback", "Engajamento", "Giveback")
 )
 
-# Define a coluna a ser usada com base na escolha
+# de acordo com a coluna selecionadas as colunas em suas respectivas bases são filtradas
 if opcao == "Engajamento + Giveback":
     base_consolidada_status_coluna_filtrada = 'status_meta_total'
     base_mensal_coluna_filtrada = 'status_meta_total'
@@ -56,12 +74,17 @@ elif opcao == "Giveback":
     base_consolidada_status_coluna_filtrada_10h = "10h+_giveback"
     engajamento_detalhado_filtrado = engajamento_detalhado_filtrado[engajamento_detalhado_filtrado['tipo_participacao_aluno'] == opcao]
 
+
+# contando valores para o st.metric
 total_alumni = base_consolidada_filtrada['RA'].count()
 total_10 = base_consolidada_filtrada[base_consolidada_filtrada[base_consolidada_status_coluna_filtrada_10h] == 1].shape[0]                         
 total_10_pct = round((total_10/total_alumni)*100,1)
+
 st.metric("Alumni 10h+ total", total_10, delta = f"{total_10_pct}% da base alumni")
 
 
+
+#puxando função com os gráficos da parte "visão por status da meta"
 engajamento_status_meta_mensal = plot_barra_empilhada_percentual(
     engajamento_mensal,
     coluna_grupo="mes",
@@ -149,8 +172,9 @@ status_meta_por_tempo_formacao = plot_barra_empilhada_percentual(
     ordem_grupos = ["Recém formado", "De 1 a 3 anos", "De 4 a 6 anos", "De 7 a 9 anos", "A partir de 10 anos"]
 )
 
-st.plotly_chart(engajamento_status_meta_mensal, use_container_width=True)
 
+#plotando gráficos da parte "visão por status da meta" 
+st.plotly_chart(engajamento_status_meta_mensal, use_container_width=True)
 
 with st.expander("Mais gráficos por status da meta"):
     col1,col2 = st.columns(2)
@@ -177,17 +201,19 @@ with tab1:
 
     st.markdown("#### Quebra inscrições")
 
+    #substituindo coluna de participação para melhor visualização (sim ou não melhor que 1 ou 0 pro gráfico)
     engajamento_detalhado_filtrado['participou?'] = engajamento_detalhado_filtrado['participou?'].replace({1: 'Sim', 0: 'Não'})
 
 
+    #esse popover coloca um filtro de mes apenas nesse gráfico 
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         with st.popover("Filtro mês"):
             filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar')
-            engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
+            engajamento_detalhado_filtrado_pelo_mes = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
 
     participacao_por_eventos = plot_barra_empilhada_percentual(
-        engajamento_detalhado_filtrado,
+        engajamento_detalhado_filtrado_pelo_mes,
         coluna_grupo='nome_evento',
         coluna_categoria='participou?',
         titulo="PARTICIPAÇÃO DOS EVENTOS DE ACORDO COM AS INSCRIÇÕES",
@@ -203,16 +229,20 @@ with tab1:
 
     with st.expander("Mais gráficos por quebra de inscrições"):
     
+
+        #filtrando mes e nome de eventos para gráficos desse bloco
         col1,col2,col3,col4 = st.columns(4)
         with col1:
             with st.popover("Filtro mês"):
                 filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar',key='outros_graficos')
                 filtro_eventos_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'nome_evento','Selecione os meses que gostaria de visualizar')
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'nome_evento',filtro_eventos_grafico_inscricoes)
+                engajamento_detalhado_filtrado_por_nome_mes = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
+                engajamento_detalhado_filtrado_por_nome_mes = aplicar_filtro(engajamento_detalhado_filtrado_por_nome_mes, 'nome_evento',filtro_eventos_grafico_inscricoes)
 
+
+        #chamando funções e configurando gráficos
         participacao_por_genero = plot_barra_empilhada_percentual(
-            engajamento_detalhado_filtrado,
+            engajamento_detalhado_filtrado_por_nome_mes,
             coluna_grupo='Gênero',
             coluna_categoria='participou?',
             titulo="PARTICIPAÇÃO POR GÊNERO",
@@ -224,7 +254,7 @@ with tab1:
         )
 
         participacao_por_raca = plot_barra_empilhada_percentual(
-            engajamento_detalhado_filtrado,
+            engajamento_detalhado_filtrado_por_nome_mes,
             coluna_grupo='Cor_raça',
             coluna_categoria='participou?',
             titulo="PARTICIPAÇÃO POR RAÇA",
@@ -236,7 +266,7 @@ with tab1:
         )
 
         participacao_por_area_formacao= plot_barra_empilhada_percentual(
-            engajamento_detalhado_filtrado,
+            engajamento_detalhado_filtrado_por_nome_mes,
             coluna_grupo='Area_Atual',
             coluna_categoria='participou?',
             titulo="PARTICIPAÇÃO POR RAÇA",
@@ -249,6 +279,8 @@ with tab1:
 
 
 
+
+        #plotando gráficos na tela
 
         col1,col2 = st.columns(2)
         with col1:
@@ -263,11 +295,14 @@ with tab1:
 with tab2:
     st.markdown("#### Parcipantes ou horas totais")   
 
+
+    #selecionar se a visualização quer ser vista por pessoas totais ou por soma de horas
     horas_totais_ou_participacao = st.radio(
     "Escolha o tipo de visualização:",
     ("Participantes totais", "Horas somadas")
 )
 
+    #no if é adicionado as variaveis que mudam de acordo com o radio acima
     if horas_totais_ou_participacao == "Participantes totais":
         tipo_agregacao = 'contagem'
         coluna_valor = None
@@ -278,16 +313,16 @@ with tab2:
         nome_grafico= "HORAS TOTAIS"
 
 
-
+    #filtrando gráficos desse bloco por nome e mes
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         with st.popover("Filtro mês"):
             filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar', key='horas_totais')
-            engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
+            engajamento_detalhado_filtrado_por_mes_hrstotais_participantes = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
 
-
+    #chamando função com gráfico e plotando ele na tela
     horas_totais_participacao_por_eventos =  grafico_barras(
-        engajamento_detalhado_filtrado,
+        engajamento_detalhado_filtrado_por_mes_hrstotais_participantes,
         "nome_evento",
         f"{nome_grafico} POR EVENTO",
         cores=['#002561'],
@@ -300,20 +335,22 @@ with tab2:
 
     st.plotly_chart(horas_totais_participacao_por_eventos, use_container_width=True)
 
-    with st.expander("Mais gráficos por horas_totais"):
-    
+    with st.expander("Mais gráficos"):
+        #filtrando gráficos desse bloco
         col1,col2,col3,col4 = st.columns(4)
         with col1:
             with st.popover("Filtro mês"):
                 filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar',key='horas_totais_outros_graficos')
                 filtro_eventos_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'nome_evento','Selecione os meses que gostaria de visualizar', key ='horas_totais_outros_graficos_nome_evento')
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'nome_evento',filtro_eventos_grafico_inscricoes)
+                engajamento_detalhado_filtrado_por_nome_mes_hrstotais = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
+                engajamento_detalhado_filtrado_por_nome_mes_hrstotais = aplicar_filtro(engajamento_detalhado_filtrado_por_nome_mes_hrstotais, 'nome_evento',filtro_eventos_grafico_inscricoes)
         
+
+        #chamando funções e plotando gráficos na tela
         col1, col2 = st.columns(2)
         with col1: 
             horas_totais_por_genero =  grafico_barras(
-                engajamento_detalhado_filtrado,
+                engajamento_detalhado_filtrado_por_nome_mes_hrstotais,
                 "Gênero",
                 f"{nome_grafico} POR GÊNERO",
                 cores=['#002561'],
@@ -325,7 +362,7 @@ with tab2:
             )
 
             horas_totais_por_raca =  grafico_barras(
-                engajamento_detalhado_filtrado,
+                engajamento_detalhado_filtrado_por_nome_mes_hrstotais,
                 "Cor_raça",
                 f"{nome_grafico} POR GÊNERO",
                 cores=['#002561'],
@@ -337,7 +374,7 @@ with tab2:
             )
 
             horas_totais_por_area_atual =  grafico_barras(
-                engajamento_detalhado_filtrado,
+                engajamento_detalhado_filtrado_por_nome_mes_hrstotais,
                 "Area_Atual",
                f"{nome_grafico} POR ÁREA DE FORMAÇÃO",
                 cores=['#002561'],

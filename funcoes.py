@@ -91,7 +91,7 @@ def grafico_barras(
 
     return fig
 
-def plot_barra_empilhada_percentual(
+def plot_barra_empilhada_percentual( 
     df,
     coluna_grupo,
     coluna_categoria,
@@ -310,8 +310,6 @@ def exibir_banner(caminho_imagem: str, altura_px: int = 100):
     </div>
     """
     st.markdown(banner_html, unsafe_allow_html=True)
-
-
 
 def plot_barra_empilhada_percentual_subplots(
     df,

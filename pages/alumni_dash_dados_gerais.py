@@ -22,9 +22,17 @@ with st.sidebar:
     st.divider()
     st.subheader('Selecione seus filtros:')
     with st.popover("Filtros"):
-        filtro_area_atual = selecionar_filtro(base_consolidada,'Area_Atual','Selecione a área de formação')
+        filtro_area_atual = selecionar_filtro(base_consolidada,'Area_Atual','Filtre por área de formação')
         base_consolidada_filtrada = aplicar_filtro(base_consolidada, 'Area_Atual',filtro_area_atual)
 
+        filtro_genero = selecionar_filtro(base_consolidada,'Gênero','Filtre por gênero')
+        base_consolidada_filtrada = aplicar_filtro(base_consolidada, 'Gênero',filtro_genero)  
+
+        filtro_raca = selecionar_filtro(base_consolidada,'Cor_raça','Filtre por raça')
+        base_consolidada_filtrada = aplicar_filtro(base_consolidada, 'Cor_raça',filtro_raca) 
+
+        filtro_tempo_formacao = selecionar_filtro(base_consolidada,'Classificacao_tempo_de_formacao','Filtre por tempo de formação')
+        base_consolidada_filtrada = aplicar_filtro(base_consolidada, 'Classificacao_tempo_de_formacao',filtro_tempo_formacao) 
 
 ## Tratamentos#
 # contando quantos alumni tem na base
@@ -146,9 +154,6 @@ st.subheader("Dados Empregabilidade", divider='blue')
 #total respondentes pesquisa
 base_respondentes_pesquisa_filtrado =  base_consolidada_filtrada[base_consolidada_filtrada['Respondeu última pesquisa?'] == "Sim"]
 total_respondentes = base_respondentes_pesquisa_filtrado['Respondeu última pesquisa?'].count()
-
-
-
 
 st.metric(
     label="Respondentes pesquisa alumni",
