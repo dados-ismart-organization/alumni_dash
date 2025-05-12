@@ -9,7 +9,7 @@ from funcoes import *
 import base64
 from io import BytesIO
 
-exibir_banner('painel/engajamento.png', altura_px=100)
+exibir_banner('painel/download_bases.png', altura_px=100)
 
 base_consolidada= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\base_final_consolidada.xlsx', tipo='excel')
 engajamento_mensal= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_por_mes.xlsx', tipo='excel')
