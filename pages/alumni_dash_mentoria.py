@@ -66,15 +66,15 @@ alumni_mentoria_status_desistente = grafico_barras(
     df=mentoria_consolidado_filtrado_desistente,
     coluna_x='motivo_desistencias_agrupado',
     nome_grafico='MOTIVOS DESISTÊNCIAS',
-    cores=['#00BDF2'],
+    cores=['#002561'],
     ordem_categorias=None
 )
 
 
-col1, col2 =  st.columns(2)
+col1, col2, col3 =  st.columns([2,0.5,2])
 with col1:
     st.plotly_chart(alumni_mentoria_status, use_container_width=True)
-with col2:
+with col3:
     st.plotly_chart(alumni_mentoria_status_desistente, use_container_width=True)
 
 
@@ -153,7 +153,7 @@ status_mentoria_por_perfil = plot_barra_empilhada_percentual(
     mentoria_consolidado_filtrado,
     coluna_grupo='Perfil_real',
     coluna_categoria='status_mentoria',
-    titulo="STATUS MENTORIA POR TEMPO DE FORMAÇÃO",
+    titulo="STATUS MENTORIA POR PERFIL",
     cor_categoria={
         "Participacao total": "#8EC6B2",
         "Participacao parcial": "#9DDCF9",
@@ -168,15 +168,15 @@ status_mentoria_por_perfil = plot_barra_empilhada_percentual(
 
 
 with st.expander("Mais gráficos por status da mentoria"):
-    col1,col2 = st.columns(2)
 
+    col1, col2, col3 =  st.columns([2,0.5,2])
     with col1:
         st.plotly_chart(status_mentoria_por_genero, use_container_width=True)
         st.divider()
         st.plotly_chart(status_mentoria_por_area_formacao, use_container_width=True)
         st.divider()
 
-    with col2:
+    with col3:
         st.plotly_chart(status_mentoria_por_raca, use_container_width=True)
         st.divider()
         st.plotly_chart(status_mentoria_por_perfil, use_container_width=True)

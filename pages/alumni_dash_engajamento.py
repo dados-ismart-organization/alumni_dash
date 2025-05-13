@@ -183,11 +183,11 @@ with tab1:
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         with st.popover("Filtro mês"):
-            filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar')
-            engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
+            filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes','Selecione os meses que gostaria de visualizar')
+            engajamento_detalhado_filtrado_quebra = aplicar_filtro(engajamento_detalhado_filtrado, 'mes',filtro_mes_grafico_inscricoes)
 
     participacao_por_eventos = plot_barra_empilhada_percentual(
-        engajamento_detalhado_filtrado,
+        engajamento_detalhado_filtrado_quebra,
         coluna_grupo='nome_evento',
         coluna_categoria='participou?',
         titulo="PARTICIPAÇÃO DOS EVENTOS DE ACORDO COM AS INSCRIÇÕES",
@@ -206,13 +206,13 @@ with tab1:
         col1,col2,col3,col4 = st.columns(4)
         with col1:
             with st.popover("Filtro mês"):
-                filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar',key='outros_graficos')
+                filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes','Selecione os meses que gostaria de visualizar',key='outros_graficos')
                 filtro_eventos_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'nome_evento','Selecione os meses que gostaria de visualizar')
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'nome_evento',filtro_eventos_grafico_inscricoes)
+                engajamento_detalhado_filtrado_quebra_outros = aplicar_filtro(engajamento_detalhado_filtrado, 'mes',filtro_mes_grafico_inscricoes)
+                engajamento_detalhado_filtrado_quebra_outros = aplicar_filtro(engajamento_detalhado_filtrado_quebra_outros, 'nome_evento',filtro_eventos_grafico_inscricoes)
 
         participacao_por_genero = plot_barra_empilhada_percentual(
-            engajamento_detalhado_filtrado,
+            engajamento_detalhado_filtrado_quebra_outros,
             coluna_grupo='Gênero',
             coluna_categoria='participou?',
             titulo="PARTICIPAÇÃO POR GÊNERO",
@@ -224,7 +224,7 @@ with tab1:
         )
 
         participacao_por_raca = plot_barra_empilhada_percentual(
-            engajamento_detalhado_filtrado,
+            engajamento_detalhado_filtrado_quebra_outros,
             coluna_grupo='Cor_raça',
             coluna_categoria='participou?',
             titulo="PARTICIPAÇÃO POR RAÇA",
@@ -236,10 +236,10 @@ with tab1:
         )
 
         participacao_por_area_formacao= plot_barra_empilhada_percentual(
-            engajamento_detalhado_filtrado,
+            engajamento_detalhado_filtrado_quebra_outros,
             coluna_grupo='Area_Atual',
             coluna_categoria='participou?',
-            titulo="PARTICIPAÇÃO POR RAÇA",
+            titulo="PARTICIPAÇÃO POR ÁREA DE FORMAÇÃO",
             altura=400,
             cor_categoria={"Sim": "#002561", "Não": "#C4ECFF"},
             ordem_categorias=["Sim", "Não"],
@@ -247,17 +247,29 @@ with tab1:
             ordem_grupos_alfabetica_invertida=True
         )
 
+        participacao_por_tempo_formacao= plot_barra_empilhada_percentual(
+            engajamento_detalhado_filtrado_quebra_outros,
+            coluna_grupo='Classificacao_tempo_de_formacao',
+            coluna_categoria='participou?',
+            titulo="PARTICIPAÇÃO POR TEMPO DE FORMAÇÃO",
+            altura=400,
+            cor_categoria={"Sim": "#002561", "Não": "#C4ECFF"},
+            ordem_categorias=["Sim", "Não"],
+            orientacao='vertical',
+            ordem_grupos = ["Recém formado", "De 1 a 3 anos", "De 4 a 6 anos", "De 7 a 9 anos", "A partir de 10 anos"]
+            )
 
 
 
-        col1,col2 = st.columns(2)
+        col1,col2, col3 = st.columns([2, 0.5,2])
         with col1:
             st.plotly_chart(participacao_por_genero, use_container_width=True)
             st.divider()
             st.plotly_chart(participacao_por_area_formacao, use_container_width=True)
-        with col2:
+        with col3:
             st.plotly_chart(participacao_por_raca, use_container_width=True)
             st.divider()
+            st.plotly_chart(participacao_por_tempo_formacao, use_container_width=True)
 
 
 with tab2:
@@ -282,12 +294,12 @@ with tab2:
     col1,col2,col3,col4 = st.columns(4)
     with col1:
         with st.popover("Filtro mês"):
-            filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar', key='horas_totais')
-            engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
+            filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes','Selecione os meses que gostaria de visualizar', key='horas_totais')
+            engajamento_detalhado_filtrado_hrs = aplicar_filtro(engajamento_detalhado_filtrado, 'mes',filtro_mes_grafico_inscricoes)
 
 
     horas_totais_participacao_por_eventos =  grafico_barras(
-        engajamento_detalhado_filtrado,
+        engajamento_detalhado_filtrado_hrs,
         "nome_evento",
         f"{nome_grafico} POR EVENTO",
         cores=['#002561'],
@@ -305,54 +317,66 @@ with tab2:
         col1,col2,col3,col4 = st.columns(4)
         with col1:
             with st.popover("Filtro mês"):
-                filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes_y','Selecione os meses que gostaria de visualizar',key='horas_totais_outros_graficos')
+                filtro_mes_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'mes','Selecione os meses que gostaria de visualizar',key='horas_totais_outros_graficos')
                 filtro_eventos_grafico_inscricoes = selecionar_filtro(engajamento_detalhado_filtrado,'nome_evento','Selecione os meses que gostaria de visualizar', key ='horas_totais_outros_graficos_nome_evento')
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'mes_y',filtro_mes_grafico_inscricoes)
-                engajamento_detalhado_filtrado = aplicar_filtro(engajamento_detalhado_filtrado, 'nome_evento',filtro_eventos_grafico_inscricoes)
-        
-        col1, col2 = st.columns(2)
-        with col1: 
-            horas_totais_por_genero =  grafico_barras(
-                engajamento_detalhado_filtrado,
-                "Gênero",
-                f"{nome_grafico} POR GÊNERO",
-                cores=['#002561'],
-                template='plotly_white',
-                bg_color='rgba(0,0,0,0)',
-                ordem_categorias='maior_menor',  
-                tipo_agregacao=tipo_agregacao,  
-                coluna_valor=coluna_valor  
-            )
+                engajamento_detalhado_filtrado_hrs_outros = aplicar_filtro(engajamento_detalhado_filtrado, 'mes',filtro_mes_grafico_inscricoes)
+                engajamento_detalhado_filtrado_hrs_outros = aplicar_filtro(engajamento_detalhado_filtrado_hrs_outros, 'nome_evento',filtro_eventos_grafico_inscricoes)
 
-            horas_totais_por_raca =  grafico_barras(
-                engajamento_detalhado_filtrado,
-                "Cor_raça",
-                f"{nome_grafico} POR GÊNERO",
-                cores=['#002561'],
-                template='plotly_white',
-                bg_color='rgba(0,0,0,0)',
-                ordem_categorias='maior_menor',  
-                tipo_agregacao=tipo_agregacao,  
-                coluna_valor=coluna_valor  
-            )
+        horas_totais_por_genero =  grafico_barras(
+            engajamento_detalhado_filtrado_hrs_outros,
+            "Gênero",
+            f"{nome_grafico} POR GÊNERO",
+            cores=['#002561'],
+            template='plotly_white',
+            bg_color='rgba(0,0,0,0)',
+            ordem_categorias='maior_menor',  
+            tipo_agregacao=tipo_agregacao,  
+            coluna_valor=coluna_valor  
+        )
 
-            horas_totais_por_area_atual =  grafico_barras(
-                engajamento_detalhado_filtrado,
-                "Area_Atual",
-               f"{nome_grafico} POR ÁREA DE FORMAÇÃO",
-                cores=['#002561'],
-                template='plotly_white',
-                bg_color='rgba(0,0,0,0)',
-                ordem_categorias='maior_menor',  
-                tipo_agregacao=tipo_agregacao,  
-                coluna_valor=coluna_valor  
-            )
+        horas_totais_por_raca =  grafico_barras(
+            engajamento_detalhado_filtrado_hrs_outros,
+            "Cor_raça",
+            f"{nome_grafico} POR GÊNERO",
+            cores=['#002561'],
+            template='plotly_white',
+            bg_color='rgba(0,0,0,0)',
+            ordem_categorias='maior_menor',  
+            tipo_agregacao=tipo_agregacao,  
+            coluna_valor=coluna_valor  
+        )
 
-        col1,col2 = st.columns(2)
+        horas_totais_por_area_atual =  grafico_barras(
+            engajamento_detalhado_filtrado_hrs_outros,
+            "Area_Atual",
+            f"{nome_grafico} POR ÁREA DE FORMAÇÃO",
+            cores=['#002561'],
+            template='plotly_white',
+            bg_color='rgba(0,0,0,0)',
+            ordem_categorias='maior_menor',  
+            tipo_agregacao=tipo_agregacao,  
+            coluna_valor=coluna_valor  
+        )
+
+        horas_totais_por_tempo_formacao =  grafico_barras(
+            engajamento_detalhado_filtrado_hrs_outros,
+            "Classificacao_tempo_de_formacao",
+            f"{nome_grafico} POR TEMPO DE FORMAÇÃO",
+            cores=['#002561'],
+            template='plotly_white',
+            bg_color='rgba(0,0,0,0)',
+            tipo_agregacao=tipo_agregacao,  
+            coluna_valor=coluna_valor,
+            ordem_categorias=["Recém formado", "De 1 a 3 anos", "De 4 a 6 anos", "De 7 a 9 anos", "A partir de 10 anos"]
+        )
+
+
+        col1,col2, col3 = st.columns([2, 0.5,2])
         with col1:
             st.plotly_chart(horas_totais_por_genero, use_container_width=True)
             st.divider()
             st.plotly_chart(horas_totais_por_area_atual, use_container_width=True)
-        with col2:
+        with col3:
             st.plotly_chart(horas_totais_por_raca, use_container_width=True)
             st.divider()
+            st.plotly_chart(horas_totais_por_tempo_formacao, use_container_width=True)

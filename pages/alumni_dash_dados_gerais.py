@@ -15,8 +15,9 @@ base_consolidada= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni
 
 st.subheader("Dados Gerais", divider='blue')
 
-#      Rosa choque; Amarelo; Azul escuro; verdinho; azul normal; salmão; verdinho escuro; Azul clarinho; laranja claro;
-#cores =   ['#EE2D67','#EBEA70','#002561','#8EC6B2','#008ED4','#F2665E', '#55AA8C','#C4ECFF','#FCBD7D']
+#azul1, azul2, azul3, azul4, azul alumni, roxinho, rosa choque, rosa claro, amarelo, verde
+
+#colors = ['#D4EFFC','#9DDCF9','#00BDF2', '#008ED4',  '#002561','#924A7C', '#EE2D67','#F2665E', '#EBEA70','#8EC6B2']
 
 with st.sidebar:
     st.divider()
@@ -59,7 +60,7 @@ alumni_area_formacao = grafico_barras(
 )
 
 
-col1, col2 = st.columns (2)
+col1, col2, col3 = st.columns([2, 0.4, 2])
 
 with col1:
     st.plotly_chart(alumni_genero, use_container_width=True)
@@ -72,7 +73,10 @@ with col1:
     st.write("")
     st.plotly_chart(alumni_area_formacao, use_container_width=True)
 
-with col2: 
+#with col2:
+    #st.markdown("""<div style="height: 1050px; border-left: 2px solid grey; margin: auto;"></div>""", unsafe_allow_html=True)
+
+with col3: 
     st.plotly_chart(alumni_raca, use_container_width=True)
     st.divider()
 
@@ -115,7 +119,7 @@ with st.expander("Gráfico curso e Universidade"):
 
     alumni_curso_formacao = grafico_barras(
         df=df_top_cursos,
-        coluna_x='Curso_Detalhado_Atual',
+        coluna_x='Curso_Agregado_Atual',
         nome_grafico='TOP 10 CURSOS - ALUMNI',
         cores=['#002561'],
         ordem_categorias="maior_menor"
@@ -228,7 +232,7 @@ with st.expander('Mais visualização por status empregabilidade'):
         base_respondentes_pesquisa_filtrado,
         coluna_grupo='Area_Atual',
         coluna_categoria="Destaque? 10%+ parametrizado",
-        titulo="DESTAQUES POR RAÇA",
+        titulo="DESTAQUES POR ÁREA ATUAL",
         cor_categoria={"Sim": "#002561", "Não": "#C4ECFF"},
         ordem_categorias=["Sim", "Não"],
         ordem_grupos_alfabetica_invertida=False,
