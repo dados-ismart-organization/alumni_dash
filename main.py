@@ -26,7 +26,7 @@ if check_microsoft_login():
                     help="Clique para desconectar-se completamente",
                     use_container_width=True):
             logout()
-            st.rerun()  # Recarrega a aplicação
+            st.rerun() 
 
 
     pg = st.navigation([dados_gerais, engajamento,mentoria, download])
