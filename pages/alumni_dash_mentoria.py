@@ -18,9 +18,9 @@ exibir_banner('painel/mentoria.png', altura_px=100)
 #colors = ['#D4EFFC','#9DDCF9','#00BDF2', '#008ED4',  '#002561','#924A7C', '#EE2D67','#F2665E', '#EBEA70','#8EC6B2']
 
 #importando bases
-mentoria_consolidado= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\mentoria_consolidado.xlsx', tipo='excel')
-mentoria_sessoes_consolidadas= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\mentoria_registros_sessoes.xlsx', tipo='excel')
-base_consolidada = importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\base_final_consolidada.xlsx', tipo='excel')
+mentoria_consolidado = importar_base('bases/mentoria_consolidado.xlsx', tipo='excel')
+mentoria_sessoes_consolidadas = importar_base('bases/mentoria_registros_sessoes.xlsx', tipo='excel')
+base_consolidada = importar_base('bases/base_final_consolidada.xlsx', tipo='excel')
 
 with st.sidebar:
         ##colocando esses espaços vazios só para o popover caber certinho na tela   
