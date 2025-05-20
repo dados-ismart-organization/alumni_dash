@@ -12,9 +12,9 @@ import base64
 exibir_banner('painel/engajamento.png', altura_px=100)
 
 
-base_consolidada= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\base_final_consolidada.xlsx', tipo='excel')
-engajamento_mensal= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_por_mes.xlsx', tipo='excel')
-engajamento_detalhado= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_detalhado.xlsx', tipo='excel')
+base_consolidada= importar_base(r'bases\base_final_consolidada.xlsx', tipo='excel')
+engajamento_mensal= importar_base(r'bases\eventos_consolidados_por_mes.xlsx', tipo='excel')
+engajamento_detalhado= importar_base(r'bases\eventos_consolidados_detalhado.xlsx', tipo='excel')
 
 st.subheader("Visão por status da meta", divider='blue')
 
