@@ -4,7 +4,7 @@ from utils.auth import *
 import time
 
 
-st.set_page_config(page_title = "Dash Alumni", layout="wide", initial_sidebar_state="expanded", page_icon='🎓', layout="wide")
+st.set_page_config(page_title = "Dash Alumni", layout="wide", initial_sidebar_state="collapsed", page_icon='🎓', layout="wide")
 
 leia_me = st.Page("pages/leia_me.py", title="Leia-me", icon='🧾')
 dados_gerais = st.Page("pages/alumni_dash_dados_gerais.py", title="Dados Gerais", icon='📈')
