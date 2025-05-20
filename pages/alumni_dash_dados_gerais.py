@@ -100,7 +100,7 @@ alumni_praca_eb = grafico_barras(
 )
 
 #st.columns feito dessa forma para dar um espaço (0.5) e uma coluna e outra
-col1, col2, col3 = st.columns([2, 0.4, 2])
+col1, col2, col3 = st.columns([5, 0.4, 5])
 
 with col1:
     st.plotly_chart(alumni_genero, use_container_width=True)
