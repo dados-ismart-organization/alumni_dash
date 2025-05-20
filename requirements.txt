@@ -5,3 +5,4 @@ plotly
 streamlit-authenticator
 Authlib>=1.3.2
 openpyxl
+xlsxwriter
