@@ -30,7 +30,6 @@ def importar_base(caminho, tipo='csv', **kwargs):
     else:
         raise ValueError("Tipo de arquivo não suportado. Use 'csv' ou 'excel'.")
     
-
 def grafico_barras(
     df,
     coluna_x,
@@ -228,7 +227,7 @@ def plot_scatter_generico_plotly(
     
     
     if colors is None:
-        colors = ['#D4EFFC','#9DDCF9','#00BDF2', '#008ED4',  '#002561','#924A7C', '#EE2D67','#F2665E', '#EBEA70','#8EC6B2']
+        colors = ['#D4EFFC','#008ED4',  '#002561','#924A7C', '#EE2D67','#F2665E', '#EBEA70','#8EC6B2']
 
     tipos_categoria = df[coluna_categoria].unique()
     cor_mapa = {tipo: colors[i % len(colors)] for i, tipo in enumerate(tipos_categoria)}
@@ -273,7 +272,7 @@ def plot_scatter_generico_plotly(
         yaxis=dict(range=[0, ylim_max]),
         legend=dict(orientation='v', x=1.02, y=1),
         margin=dict(r=150),
-        height=500
+        height=600
     )
 
     return fig

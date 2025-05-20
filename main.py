@@ -14,25 +14,25 @@ download = st.Page("pages/alumni_dash_downloads_bases.py", title="Download de ba
 
 
 
-if check_microsoft_login():
-    # Mostra o toast APENAS na primeira vez
-    if "auth_success_shown" not in st.session_state:
-        st.toast("Autenticação realizada com sucesso! Selecione uma página no menu lateral.", icon="✅")
-        st.session_state.auth_success_shown = True  # Marca como já exibido
+# if check_microsoft_login():
+#     # Mostra o toast APENAS na primeira vez
+#     if "auth_success_shown" not in st.session_state:
+#         st.toast("Autenticação realizada com sucesso! Selecione uma página no menu lateral.", icon="✅")
+#         st.session_state.auth_success_shown = True  # Marca como já exibido
  
-    # Botão de logout na sidebar (melhorado)
-    with st.sidebar:
-        if st.button("🚪 **Sair da conta**",
-                    type="secondary",
-                    help="Clique para desconectar-se completamente",
-                    use_container_width=True):
-            logout()
-            st.rerun() 
+#     # Botão de logout na sidebar (melhorado)
+#     with st.sidebar:
+#         if st.button("🚪 **Sair da conta**",
+#                     type="secondary",
+#                     help="Clique para desconectar-se completamente",
+#                     use_container_width=True):
+#             logout()
+#             st.rerun() 
 
 
-    pg = st.navigation([leia_me,dados_gerais, engajamento,mentoria, download])
+pg = st.navigation([leia_me,dados_gerais, engajamento,mentoria, download])
 
-    pg.run()
+pg.run()
 
-else:
-    st.stop()
+# else:
+#     st.stop()

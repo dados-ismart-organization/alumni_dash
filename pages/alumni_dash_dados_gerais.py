@@ -336,6 +336,8 @@ plotagem_graduados = plot_scatter_generico_plotly(
     label_linha_referencia='Remuneração Esperada',
     titulo='REMUNERAÇÃO POR TEMPO DE FORMAÇÃO',
     label_x='Tempo de Formação',
-    label_y='Salário'
+    label_y='Salário',
+    colors = ['#924A7C', '#EE2D67','#008ED4','#EBEA70','#8EC6B2','#F2665E', '#002561', '#D4EFFC','#9DDCF9' ]
+
 )
 st.plotly_chart(plotagem_graduados, use_container_width=True)
