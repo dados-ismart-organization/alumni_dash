@@ -11,7 +11,7 @@ import base64
 exibir_banner('painel/dados_gerais.png', altura_px=100)
 
 
-base_consolidada= importar_base(r'bases\base_final_consolidada.xlsx', tipo='excel')
+base_consolidada= importar_base('bases/base_final_consolidada.xlsx', tipo='excel')
 
 st.subheader("Dados Gerais", divider='blue')
 
