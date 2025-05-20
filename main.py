@@ -6,7 +6,7 @@ import time
 
 st.set_page_config(page_title = "Dash Alumni", layout="wide", initial_sidebar_state="collapsed", page_icon='🎓')
 
-leia_me = st.Page("pages/leia_me.py", title="Leia-me", icon='🧾')
+leia_me = st.Page("pages/leia_me.py", title="Leia-me", icon='🧾', layout=wide)
 dados_gerais = st.Page("pages/alumni_dash_dados_gerais.py", title="Dados Gerais", icon='📈')
 engajamento = st.Page("pages/alumni_dash_engajamento.py", title="Engajamento e Giveback", icon='🎯')
 mentoria = st.Page("pages/alumni_dash_mentoria.py", title="Mentoria", icon='🧑‍🏫')
