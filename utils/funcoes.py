@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 #@st.cache_data()
-st.cache_data.clear()
+@st.cache_data.clear()
 def importar_base(caminho, tipo='csv', **kwargs):
     """
     Importa uma base de dados do tipo CSV ou Excel.
