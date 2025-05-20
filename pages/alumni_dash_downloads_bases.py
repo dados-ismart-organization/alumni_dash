@@ -11,11 +11,11 @@ from io import BytesIO
 
 exibir_banner('painel/download_bases.png', altura_px=100)
 
-base_consolidada= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\base_final_consolidada.xlsx', tipo='excel')
-engajamento_mensal= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_por_mes.xlsx', tipo='excel')
-engajamento_detalhado= importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\eventos_consolidados_detalhado.xlsx', tipo='excel')
-mentoria_consolidado = importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\mentoria_consolidado.xlsx', tipo='excel')
-mentoria_registros = importar_base(r'C:\Users\mcerqueira\Documents\Streamlit\alumni_dash\bases\mentoria_registros_sessoes.xlsx', tipo='excel')
+base_consolidada = importar_base('bases/base_final_consolidada.xlsx', tipo='excel')
+engajamento_mensal = importar_base('bases/eventos_consolidados_por_mes.xlsx', tipo='excel')
+engajamento_detalhado = importar_base('bases/eventos_consolidados_detalhado.xlsx', tipo='excel')
+mentoria_consolidado = importar_base('bases/mentoria_consolidado.xlsx', tipo='excel')
+mentoria_registros = importar_base('bases/mentoria_registros_sessoes.xlsx', tipo='excel')
 
 
 #dando espaço no expander e no banner
