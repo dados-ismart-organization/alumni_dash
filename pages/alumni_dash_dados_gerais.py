@@ -12,7 +12,7 @@ exibir_banner('painel/dados_gerais.png', altura_px=100)
 
 
 base_consolidada= importar_base('bases/base_final_consolidada.xlsx', tipo='excel')
-
+base_consolidada= base_consolidada[base_consolidada['Status'] == 'ativo']
 st.subheader("Dados Gerais", divider='blue')
 
 #azul1, azul2, azul3, azul4, azul alumni, roxinho, rosa choque, rosa claro, amarelo, verde
